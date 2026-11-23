@@ -82,18 +82,18 @@ final class PiPController: NSObject, AVPictureInPictureSampleBufferPlaybackDeleg
         let status = CMTimebaseCreateWithSourceClock(
             allocator: nil,
             sourceClock: CMClockGetHostTimeClock(),
-            timebase: &tb
+            timebaseOut: &tb
         )
         if status == noErr, let tb {
             timebase = tb
-            CMTimebaseSetRate(tb, 0)
+            CMTimebaseSetRate(tb, rate: 0)
         }
     }
 
     /// 安全设置时间轴速率（timebase 为可选）
     private func setTimebaseRate(_ rate: Float64) {
         guard let tb = timebase else { return }
-        CMTimebaseSetRate(tb, rate)
+        CMTimebaseSetRate(tb, rate: rate)
     }
 
     // MARK: - 对外控制
@@ -126,7 +126,7 @@ final class PiPController: NSObject, AVPictureInPictureSampleBufferPlaybackDeleg
     /// seek 后同步 PiP 时间轴，保证小窗进度正确
     func syncTime(to seconds: TimeInterval) {
         guard let tb = timebase else { return }
-        CMTimebaseSetTime(tb, CMTime(seconds: seconds, preferredTimescale: 600))
+        CMTimebaseSetTime(tb, time: CMTime(seconds: seconds, preferredTimescale: 600))
         frameCount = Int64(seconds * Double(fps))
     }
 
@@ -214,7 +214,7 @@ final class PiPController: NSObject, AVPictureInPictureSampleBufferPlaybackDeleg
         let fdStatus = CMVideoFormatDescriptionCreateForImageBuffer(
             allocator: kCFAllocatorDefault,
             imageBuffer: pixelBuffer,
-            formatDescription: &formatDescription
+            formatDescriptionOut: &formatDescription
         )
         guard fdStatus == noErr, let fd = formatDescription else { return nil }
 

@@ -22,39 +22,29 @@ struct VideoItem: Identifiable, Codable, Hashable {
     }
 
     /// 解析书签拿到可访问的 URL
+    /// iOS 上 UIDocumentPicker 授权目录的书签用普通选项解析即可，
+    /// `.withSecurityScope` 是 macOS 专属，iOS 不可用。
     func resolveURL() -> URL? {
         var stale = false
-        if let url = try? URL(
+        return try? URL(
             resolvingBookmarkData: bookmark,
-            options: [.withSecurityScope],
+            options: [],
             relativeTo: nil,
             bookmarkDataIsStale: &stale
-        ) {
-            return url
-        }
-        // 兼容普通书签（沙盒内文件）
-        return try? URL(resolvingBookmarkData: bookmark, options: [], relativeTo: nil, bookmarkDataIsStale: &stale)
+        )
     }
 
-    /// 从文件 URL 创建条目（生成书签，优先安全作用域，失败回退普通书签）
+    /// 从文件 URL 创建条目（生成普通书签，iOS 沙盒内 / 文件 App 授权目录通用）
     static func make(from url: URL) -> VideoItem? {
         let didStart = url.startAccessingSecurityScopedResource()
         defer {
             if didStart { url.stopAccessingSecurityScopedResource() }
         }
-        var bookmark = try? url.bookmarkData(
-            options: [.withSecurityScope, .minimalBookmark],
+        guard let bookmark = try? url.bookmarkData(
+            options: [.minimalBookmark],
             includingResourceValuesForKeys: nil,
             relativeTo: nil
-        )
-        if bookmark == nil {
-            bookmark = try? url.bookmarkData(
-                options: [.minimalBookmark],
-                includingResourceValuesForKeys: nil,
-                relativeTo: nil
-            )
-        }
-        guard let bookmark else { return nil }
+        ) else { return nil }
         return VideoItem(name: url.lastPathComponent, bookmark: bookmark)
     }
 }

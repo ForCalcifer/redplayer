@@ -125,7 +125,7 @@ final class PlayerEngine: NSObject, ObservableObject {
 
     /// seek 到 0...1
     func seek(to value: Float) {
-        guard player.seekable else { return }
+        guard player.isSeekable else { return }
         player.position = min(max(value, 0), 1)
         syncPiPTime()
         updateNowPlaying()
@@ -133,7 +133,7 @@ final class PlayerEngine: NSObject, ObservableObject {
 
     /// 快进/快退 N 秒（正数前进，负数后退）
     func skip(seconds: Int) {
-        guard player.seekable, duration > 0 else { return }
+        guard player.isSeekable, duration > 0 else { return }
         let target = currentTime + TimeInterval(seconds)
         player.position = Float(min(max(target / duration, 0), 1))
         syncPiPTime()
@@ -239,8 +239,8 @@ final class PlayerEngine: NSObject, ObservableObject {
 
     private func syncProgress() {
         guard player.state == .playing else { return }
-        let currentMs = player.time?.value?.doubleValue ?? 0
-        let lengthMs = player.media?.length?.value?.doubleValue ?? 0
+        let currentMs = player.time.value?.doubleValue ?? 0
+        let lengthMs = player.media?.length.value?.doubleValue ?? 0
 
         currentTime = currentMs / 1000.0
         duration = lengthMs / 1000.0

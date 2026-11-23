@@ -248,7 +248,7 @@ struct PlayerView: View {
                     Spacer()
                     Text(formatTime(engine.duration))
                 }
-                .font(.system(size: 11, monospacedDigit: true))
+                .font(.system(size: 11).monospacedDigit())
                 .foregroundColor(.white.opacity(0.75))
             }
             .padding(.horizontal, 22)
