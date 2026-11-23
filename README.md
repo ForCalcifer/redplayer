@@ -40,22 +40,21 @@ iOS 的系统画中画只接受系统播放器（AVPlayer）的画面，而 VLCK
 
 ### 第 1 步：建 GitHub 仓库并把代码传上去
 
-1. 在 GitHub 新建一个**私有仓库**（Private 即可，Actions 免费额度对私有仓库也够用）。
-2. 把 `LocalPlayer/` 这个文件夹里的**全部内容**（含 `.github` 隐藏目录）上传到仓库。
+> 本地的 `git init` 和首次 `commit` **已经帮你做好了**（15 个文件 / 2140 行已入库），你只需建仓库 + 推送，两步：
 
-   在你这台 Windows 电脑上装了 Git 后，可以在 PowerShell 里：
+1. 打开 https://github.com/new 新建一个**私有仓库**（Private 即可，Actions 免费额度对私有仓库也够用）。名字随意，比如 `localplayer`。**不要勾选** README / license / .gitignore，保持空仓库。
 
-   ```powershell
-   cd D:\你的路径\LocalPlayer
-   git init
-   git add -A
-   git commit -m "first commit"
-   git remote add origin https://github.com/你的用户名/你的仓库名.git
-   git branch -M main
-   git push -u origin main
-   ```
+2. 双击本目录里的 **`一键推送到GitHub.cmd`**，按提示粘贴第 1 步建好的仓库 HTTPS 地址（形如 `https://github.com/你的用户名/localplayer.git`），回车。脚本会自动设置远程并推送。首次推送会弹出浏览器让你登录 GitHub，登录一次以后就不用了。
 
-   > 注意：`.github` 是隐藏目录，用 `git add -A` 会一起提交，不要漏掉。
+   > 想手动敲命令也可以（本目录已 init + commit 好，不用再做）：
+   > ```powershell
+   > cd D:\你的路径\LocalPlayer
+   > git remote add origin https://github.com/你的用户名/localplayer.git
+   > git branch -M main
+   > git push -u origin main
+   > ```
+
+   > 注意：`.github` 是隐藏目录，首次提交时已经包含进去了，不用管。
 
 ### 第 2 步：等 GitHub Actions 编译
 
