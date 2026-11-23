@@ -1,0 +1,41 @@
+name: LocalPlayer
+options:
+  bundleIdPrefix: com.localplayer
+  deploymentTarget:
+    iOS: "16.0"
+  groupSortPosition: top
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    SWIFT_STRICT_CONCURRENCY: minimal
+    TARGETED_DEVICE_FAMILY: "1,2"
+    SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
+    CODE_SIGN_STYLE: Manual
+    DEVELOPMENT_TEAM: ""
+    ALWAYS_SEARCH_USER_PATHS: NO
+    GENERATE_INFOPLIST_FILE: NO
+
+configs:
+  Debug: debug
+  Release: release
+
+targets:
+  LocalPlayer:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources/LocalPlayer
+        excludes:
+          - "Supporting/Info.plist"
+    settings:
+      base:
+        PRODUCT_NAME: LocalPlayer
+        PRODUCT_BUNDLE_IDENTIFIER: com.localplayer.app
+        INFOPLIST_FILE: Sources/LocalPlayer/Supporting/Info.plist
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: 1
+        LD_RUNPATH_SEARCH_PATHS:
+          - "$(inherited)"
+          - "@executable_path/Frameworks"

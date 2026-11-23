@@ -1,0 +1,17 @@
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+DerivedData/
+build/
+
+# CocoaPods
+Pods/
+
+# 生成的 IPA
+*.ipa
+Payload/
+
+# macOS / 系统
+.DS_Store
+*.swp
