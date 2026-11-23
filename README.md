@@ -65,29 +65,48 @@ iOS 的系统画中画只接受系统播放器（AVPlayer）的画面，而 VLCK
 
    > 若编译失败：点进去看红色步骤的日志，把报错发给我即可。
 
-### 第 3 步：用免费 Apple ID 装到手机（二选一）
+### 第 3 步：用免费 Apple ID 装到手机（本机 iOS 27.0）
 
-免费 Apple ID 签名**7 天过期**，需要定期刷新。两种方式：
+**结论先说**：iOS 27 上 **TrollStore 用不了**（CoreTrust 漏洞在 17.0.1 就被 Apple 修补），只能用证书签名。
+推荐 **SideStore**——iOS 27 新增了「无线信任开发者账号」能力，SideStore 能**全程在手机上签名和续签，不用电脑一直开着**。
 
-#### 方式 A：AltStore（需要一台 Windows 电脑，最稳）
+> ⚠️ **重要前提**：侧载工具更新很快，尤其 iOS 27 很新。安装**务必用官网/官方 GitHub 的最新版**（稳定版不支持就上 nightly），并按工具当前界面操作，别照搬旧教程的菜单名。
 
-1. 电脑上安装 AltServer（windows 版）：https://altstore.io/
-2. 手机上安装 **AltStore** App（按官网指引，用电脑上的 AltServer + WiFi 安装）。
-3. 打开 AltStore → 设置里登录你的 **Apple ID**（建议专门注册一个，开启两步验证，用到 App 专用密码）。
-4. 把下载好的 `LocalPlayer.ipa` 用数据线/隔空投送/AirDrop 传到手机「文件」App。
-5. 在 AltStore 的 **My Apps** 页 → 左上角 `+` → 选择 `LocalPlayer.ipa` → 它会自动用你的免费账号签名并安装。
-6. 以后每 7 天：保持电脑 AltServer 运行 + 手机同 WiFi，AltStore 里点 **Refresh All** 即可续签。
+#### 推荐：SideStore（手机端签名 + 自动续签）
 
-#### 方式 B：SideStore（纯手机侧载，不依赖电脑，适合懒得开电脑）
+**准备**
+- 一个**备用 Apple ID**（不要用主力号，侧载 App 会绑定签名账号）。
+- 把 `LocalPlayer.ipa` 传进手机「文件」App（AirDrop / 网盘 / 数据线都行）。
+- 手机先完整备份一次，侧载出错可回滚。
 
-SideStore 可以完全在手机上签名和续签（需配合 StikDebug/Jitterless 等方案做首次激活，按最新教程走）。
+**安装 SideStore（两条路，任选）**
 
-1. 用手机 Safari 打开 SideStore 官网获取安装方式：https://sidestore.io/
-2. 按指引用你的免费 Apple ID 安装 SideStore。
-3. 打开 SideStore → 登录 Apple ID → 选择 `LocalPlayer.ipa` 安装。
-4. SideStore 支持定时自动续签，配置好后基本不用管。
+- **路线 1 · 纯手机（iOS 27 无线信任， preferred）**：手机 Safari 打开官网 https://sidestore.io/ ，按当前指引用 SideInstaller / 网页方式安装 SideStore。iOS 27 支持无线信任开发者账号，理论上不用电脑。
+- **路线 2 · 电脑首装（更稳，推荐先走这条）**：如果路线 1 装不上，用这台 Windows 电脑 + iLoader（https://github.com/nab138/iloader/releases ）或 SideStore 官方安装器，数据线连手机装一次 SideStore。**只需电脑这一次**，之后续签全在手机。
 
-> 免费签名的硬性限制：同一个免费 Apple ID 最多注册 3 个 App、每个 App 最多 3 台设备。装之前确认名额，必要时注销旧设备（Settings → 你的 Apple ID → 设备）。
+**首次配置（三条都要做，漏了会闪退）**
+1. 设置 → 通用 → **VPN 与设备管理** → 找到签名用的开发者证书 → **信任**。
+2. 设置 → 隐私与安全性 → **开发者模式** → 打开 → 按提示重启 → 重启后再确认一次弹窗。
+3. 打开 SideStore → 按提示安装它的 **VPN 描述文件**（只在本机工作，不走流量）→ 登录备用 Apple ID → 手动刷新一次 SideStore 自己，确认签名链路通。
+   - 若 SideStore 需要配对文件（pairing file）：在电脑上用 **Jitterbugpair** 生成后导入 SideStore，之后即可脱离电脑自签。
+
+**装我们的播放器**
+1. 在「文件」App 里找到 `LocalPlayer.ipa` → 共享 → 用 SideStore 打开（或在 SideStore 里点 `+` 选这个 IPA）。
+2. SideStore 用你的免费账号签名并安装 → 主屏出现「本地播放器」。
+3. 打开就能用。
+
+**续签（7 天一次）**
+- 免费证书 7 天到期。到期前：连 Wi-Fi、解锁屏幕，回 SideStore 点 **Refresh** 刷新。
+- 保持 SideStore 和播放器都刷新一次；连着 Wi-Fi 且解锁状态成功率最高。
+- 配置好后基本就是每周点一下，不用碰电脑。
+
+#### 备选：AltStore Classic（电脑常开才划算，不推荐给你）
+
+AltStore 每次续签都要电脑上的 AltServer 开着且手机同 WiFi。你有 SideStore 就没必要走这条。
+
+> **免费签名硬性限制**：同一个免费 Apple ID 最多注册 3 个 App、每个 App 最多 3 台设备。装之前确认名额，必要时在 设置 → Apple ID → 设备 里注销旧设备。
+
+> **iOS 27 特别提醒**：搜索结果显示 SideStore 稳定版未必明确声明支持 iOS 27，nightly 构建已切到 iOS 27 SDK。若稳定版装不上或登录报错，直接换 nightly / 最新版；登录 503 多为 Apple 服务器临时问题，稍后重试或换网络。
 
 ### 第 4 步：把视频放进 App
 
