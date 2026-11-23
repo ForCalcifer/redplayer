@@ -81,7 +81,13 @@ iOS 的系统画中画只接受系统播放器（AVPlayer）的画面，而 VLCK
 
 **安装 SideStore（两条路，任选）**
 
-- **路线 1 · 纯手机（iOS 27 无线信任， preferred）**：手机 Safari 打开官网 https://sidestore.io/ ，按当前指引用 SideInstaller / 网页方式安装 SideStore。iOS 27 支持无线信任开发者账号，理论上不用电脑。
+- **路线 1 · 纯手机（iOS 27 免电脑，推荐）**：
+  - ⚠️ 注意：`sidestore.io` 现在打开是 App 展示墙，**装不了 SideStore**。正确入口是 **https://sideinstaller.net/**（唯一官方；`sideinstaller.com` 是假冒站，可能有恶意软件，别用）。
+  - 前提：设置 → 隐私与安全性 → 打开**开发者模式**（重启后再确认一次）；App Store 装 **LocalDevVPN**。
+  - 手机 Safari 打开 sideinstaller.net → 在证书列表选一个剩余天数多的点 Install → 设置 → 通用 → VPN与设备管理 → **信任**该证书。
+  - 打开 SideInstaller → 连上 LocalDevVPN → 登录**备用 Apple ID**（不要用主力号，也别用台湾区号）→ 点 **Install SideStore** → 等它装完。
+  - 装好后打开 SideStore，按提示装它的 VPN 描述文件、登录同一个备用 Apple ID、手动刷新一次。
+  - 登录报 503 是 Apple 服务器临时抽风，换网络或稍后重试。
 - **路线 2 · 电脑首装（更稳，推荐先走这条）**：如果路线 1 装不上，用这台 Windows 电脑 + iLoader（https://github.com/nab138/iloader/releases ）或 SideStore 官方安装器，数据线连手机装一次 SideStore。**只需电脑这一次**，之后续签全在手机。
 
 **首次配置（三条都要做，漏了会闪退）**
